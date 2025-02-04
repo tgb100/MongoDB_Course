@@ -1,239 +1,126 @@
 # SQL_Practice_tgb
 tgb's SQL Practice
+-- Database Operations for VIT
 -- Show existing databases
 SHOW DATABASES;
 
--- Create a new database named 'VIT'
-CREATE DATABASE VIT;
-
--- Use the 'VIT' database
+-- Create and use VIT database
+CREATE DATABASE IF NOT EXISTS VIT;
 USE VIT;
 
--- Create a table 'CSE'
-CREATE TABLE CSE (
-    s_id INT,
-    s_name VARCHAR(30),
-    s_mark INT
+-- Create CSE table with improved structure
+CREATE TABLE IF NOT EXISTS CSE (
+    s_id INT PRIMARY KEY,
+    s_name VARCHAR(30) NOT NULL,
+    s_mark INT CHECK (s_mark BETWEEN 0 AND 100),
+    s_country VARCHAR(50) DEFAULT 'India'
 );
 
--- Show all tables in the 'VIT' database
-SHOW TABLES FROM VIT;
+-- Verify table creation
+SHOW TABLES;
 
--- Select all records from the 'CSE' table
-SELECT * FROM CSE;
+-- Insert initial data
+INSERT INTO CSE (s_id, s_name, s_mark) 
+VALUES (70, 'jm', 78);
 
--- Insert data into the 'CSE' table 
-INSERT INTO CSE (s_id, s_name, s_mark) VALUES (70, 'jm', 78);
-
--- Describe the table structure 
+-- Table structure inspection
 DESC CSE;
 
--- Add a new column 'address' to the 'CSE' table
-ALTER TABLE CSE ADD COLUMN address VARCHAR(200);
+-- Column modifications
+ALTER TABLE CSE 
+ADD COLUMN address VARCHAR(200);
 
--- Drop the 'address' column from the 'CSE' table
-ALTER TABLE CSE DROP COLUMN address;
+ALTER TABLE CSE 
+DROP COLUMN address;
 
--- Add a new column 's_country' to the 'CSE' table
-ALTER TABLE CSE ADD COLUMN s_country VARCHAR(200);
+ALTER TABLE CSE 
+RENAME COLUMN s_country TO s_state;
 
--- Rename column 's_country' to 's_state' in the 'CSE' table
-ALTER TABLE CSE RENAME COLUMN s_state TO s_country ;
-
+-- Safe update demonstration
+SET SQL_SAFE_UPDATES = 0;
 UPDATE CSE 
-SET s_country = 'India' 
+SET s_state = 'Belgium' 
 WHERE s_id = 70;
+SET SQL_SAFE_UPDATES = 1;
 
---- With out "changing" 
+-- Transaction Practice Database
+CREATE DATABASE IF NOT EXISTS practice1;
+USE practice1;
 
-SET SQL_SAFE_UPDATES = 0;
+CREATE TABLE IF NOT EXISTS Mech (
+    s_id INT PRIMARY KEY,
+    s_name VARCHAR(25)
+);
 
-UPDATE CSE  
-SET s_country = 'Belgium'  
-WHERE s_id = 80;
-
-SET SQL_SAFE_UPDATES = 1; -- (Re-enable safe mode after update)
-
-update CSE 
-set s_name ='Ashirwad'
-where s_id=70;
-
-
-
-create database practice1;
-use practice1;
-SELECT * FROM  practice1; -- i can not run this command 
-create table Mech(s_id int,s_name varchar(25));
+-- Transaction with savepoints
 START TRANSACTION;
-insert into Mech values (101,'jayanth');
-
-
-
-
-
-create database practice1;
-use practice1;
-create table Mech(s_id int,s_name varchar(25));
-START TRANSACTION;
-insert into Mech values (101,'jayanth');
+INSERT INTO Mech VALUES (101, 'jayanth');
 SAVEPOINT A;
-update mech set s_id=102 where s_id=101;
+UPDATE Mech SET s_id = 102 WHERE s_id = 101;
 SAVEPOINT B;
-insert into Mech values (103,'Karthick');
-select * from mech;
+INSERT INTO Mech VALUES (103, 'Karthick');
 SAVEPOINT C;
-select * from mech;
 ROLLBACK TO B;
-select * from mech;
-commit;
+COMMIT;
 
+-- Organization Database Setup
+CREATE DATABASE IF NOT EXISTS ORG;
+USE ORG;
 
-
-CREATE DATABASE ORG123;
-SHOW DATABASES;
-USE ORG123;
-
-CREATE TABLE Worker (
-	WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	FIRST_NAME CHAR(25),
-	LAST_NAME CHAR(25),
-	SALARY INT(15),
-	JOINING_DATE DATETIME,
-	DEPARTMENT CHAR(25)
+CREATE TABLE IF NOT EXISTS Worker (
+    WORKER_ID INT PRIMARY KEY AUTO_INCREMENT,
+    FIRST_NAME VARCHAR(25),
+    LAST_NAME VARCHAR(25),
+    SALARY INT,
+    JOINING_DATE DATETIME,
+    DEPARTMENT VARCHAR(25)
 );
 
-SHOW TABLES FROM  ORG123 ;
-desc worker;
+-- Insert data with corrected date format
+INSERT INTO Worker (FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
+('Monika', 'Arora', 100000, '2014-02-20 09:00:00', 'HR'),
+('Niharika', 'Verma', 80000, '2014-06-11 09:00:00', 'Admin'),
+('Vishal', 'Singhal', 300000, '2014-02-20 09:00:00', 'HR'),
+('Amitabh', 'Singh', 500000, '2014-02-20 09:00:00', 'Admin'),
+('Vivek', 'Bhati', 500000, '2014-06-11 09:00:00', 'Admin'),
+('Vipul', 'Diwan', 200000, '2014-06-11 09:00:00', 'Account'),
+('Satish', 'Kumar', 75000, '2014-01-20 09:00:00', 'Account'),
+('Geetika', 'Chauhan', 90000, '2014-04-11 09:00:00', 'Admin');
 
-SET SQL_SAFE_UPDATES = 0;
-
-
-SET SQL_SAFE_UPDATES = 1; -- (Re-enable safe mode after update)
-
-select * from org123;
-INSERT INTO Worker 
-	(WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
-		(001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'),
-		(002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'),
-		(003, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'),
-		(004, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'),
-		(005, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'),
-		(006, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'),
-		(007, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'),
-		(008, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
-
-
-
+-- Enhanced Queries
+-- 1. Employees with salary > 200,000 in HR
 SELECT * FROM Worker 
-WHERE SALARY > 200000 AND DEPARTMENT = 'HR';
+WHERE DEPARTMENT = 'HR' AND SALARY > 200000;
 
+-- 2. Salary range query
 SELECT * FROM Worker 
-WHERE SALARY >= 200000;
+WHERE SALARY BETWEEN 200000 AND 500000;
 
-SELECT * FROM Worker;
-
-
-
-SELECT * FROM Worker;
-
-select * from worker where salary >= 200000 and salary <= 500000;
-
-select first_name from worker where salary between 200000 and 400000 and worker_id  in (1,2,3,4,5);
-
-desc worker;
-
-select * from worker  where salary between 200000 and 400000 and worker_id  in (1,2,3,4,5);
-
-
-
-SELECT MIN(column_name)
-FROM table_name
-WHERE condition ;
-
-SELECT MAX(column_name)
-FROM table_name
-WHERE condition;
-
-
-
-SELECT * FROM Worker 
-WHERE DEPARTMENT = 'HR' 
-ORDER BY SALARY ASC 
-LIMIT 1;
-
-SELECT * FROM Worker W1
-WHERE NOT EXISTS (
-    SELECT 1 FROM Worker W2
-    WHERE W2.DEPARTMENT = W1.DEPARTMENT AND W2.SALARY > W1.SALARY
-);
-
-
-
-
-SELECT W1.SALARY AS MAX_SALARY
-FROM Worker W1, Worker W2
-WHERE W1.DEPARTMENT = 'Account' 
-AND W1.SALARY >= W2.SALARY
-AND W2.DEPARTMENT = 'Account'
-GROUP BY W1.SALARY
-HAVING COUNT(W2.SALARY) = (SELECT COUNT(*) FROM Worker WHERE DEPARTMENT = 'Account');
-
-
-SELECT W1.SALARY AS MIN_SALARY
-FROM Worker W1, Worker W2
-WHERE W1.DEPARTMENT = 'Account' 
-AND W1.SALARY <= W2.SALARY
-AND W2.DEPARTMENT = 'Account'
-GROUP BY W1.SALARY
-HAVING COUNT(W2.SALARY) = (SELECT COUNT(*) FROM Worker  WHERE DEPARTMENT = 'Account');
-
-SELECT W1.SALARY AS MAX_SALARY
-FROM Worker W1, Worker W2
-WHERE W1.DEPARTMENT = 'Account' 
-AND W1.SALARY >= W2.SALARY
-AND W2.DEPARTMENT = 'Account'
-GROUP BY W1.SALARY
-HAVING COUNT(W2.SALARY) = (SELECT COUNT(*) FROM Worker WHERE DEPARTMENT = 'Account');
-
-
-SELECT COUNT(column_name)
-FROM table_name
-WHERE condition;
-
--- AVG() Syntax
-
-SELECT AVG(column_name)
-FROM table_name
-WHERE condition;
-
--- SUM() Syntax
-
-SELECT SUM(column_name)
-FROM table_name
-WHERE condition;
-
-
-SELECT MAX(SALARY) AS MAX_SALARY
-FROM (
-    SELECT MAX(SALARY) AS SALARY FROM Worker WHERE DEPARTMENT = 'Account'
-    UNION
-    SELECT MAX(SALARY) AS SALARY FROM Worker WHERE DEPARTMENT = 'HR'
-) AS res_salary;
-
-
-Limit to 1000 rows
-FROM worker;
-select * from worker where department='Admin' order by salary desc limit 3; 
-select department, count(department) as total_employees from worker where department = 'HR' or department="account' group by department;
-
-
-SELECT DEPARTMENT, COUNT(*) AS Count
+-- 3. Department statistics
+SELECT 
+    DEPARTMENT,
+    COUNT(*) AS employee_count,
+    AVG(SALARY) AS avg_salary,
+    MAX(SALARY) AS max_salary,
+    MIN(SALARY) AS min_salary
 FROM Worker
 GROUP BY DEPARTMENT
-ORDER BY Count DESC
+ORDER BY employee_count DESC;
+
+-- 4. Top 2 departments by employee count
+SELECT DEPARTMENT, COUNT(*) AS employee_count
+FROM Worker
+GROUP BY DEPARTMENT
+ORDER BY employee_count DESC
 LIMIT 2;
 
+-- 5. Department-wise maximum salaries using window functions
+SELECT DISTINCT DEPARTMENT,
+MAX(SALARY) OVER (PARTITION BY DEPARTMENT) AS max_salary
+FROM Worker;
 
-select department, count(department) as total_employees from worker
-group by department
-order by total_employees desc Limit 2;
+-- 6. Top 3 salaries in Admin department
+SELECT * FROM Worker
+WHERE DEPARTMENT = 'Admin'
+ORDER BY SALARY DESC
+LIMIT 3;
