@@ -124,3 +124,18 @@ SELECT * FROM Worker
 WHERE DEPARTMENT = 'Admin'
 ORDER BY SALARY DESC
 LIMIT 3;
+
+CREATE TABLE person1 (
+    id INT PRIMARY KEY, 
+    lastname VARCHAR(255) NOT NULL UNIQUE, 
+    firstname VARCHAR(255) NOT NULL UNIQUE, 
+    age INT
+);
+
+DESC person1;
+
+INSERT INTO person1 (id, lastname, firstname, age) 
+VALUES (1, 'Doe', 'John', 30);
+
+
+SELECT * FROM person1;
