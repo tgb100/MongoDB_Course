@@ -172,3 +172,136 @@ select * from category;
 delete from category where c_id=101;
 
 drop table category;
+
+USE org123;
+
+
+CREATE TABLE Student (
+    sno INT PRIMARY KEY,
+    sname VARCHAR(20),
+    age INT
+
+);
+
+
+INSERT INTO Student(sno, sname,age) 
+ VALUES(5,'skit',17),
+       (7,'samya',18),
+       (6,'samm',16);
+
+SELECT *
+FROM Student;
+
+CREATE TABLE Course (
+    cno INT PRIMARY KEY,
+    cname VARCHAR(20)
+);
+
+SELECT *
+FROM Course;
+
+INSERT INTO Course(cno, cname) 
+ VALUES(101,'c'),
+       (102,'c++'),
+       (103,'DBMS');
+
+INSERT INTO Course(cno, cname) 
+ VALUES(104,'c#'),
+       (105,'java'),
+       (106,'OS');
+
+CREATE TABLE Enroll (
+    sno INT,
+    cno INT,
+    jdate DATE,
+    PRIMARY KEY(sno, cno),
+    FOREIGN KEY(sno) REFERENCES Student(sno) ON DELETE CASCADE,
+    FOREIGN KEY(cno) REFERENCES Course(cno) ON DELETE CASCADE
+);
+
+INSERT INTO Enroll(sno, cno, jdate) 
+VALUES (1, 101, '2021-06-05'),
+       (1, 102, '2021-06-05'),
+       (2, 103, '2021-06-06');
+
+SELECT * FROM Enroll;
+
+DELETE FROM Student WHERE sname = 'Ramya';
+
+SELECT * FROM Student;
+
+SELECT * FROM Enroll;
+
+INSERT INTO Enroll(sno, cno, jdate) 
+VALUES(2, 105, "2021/05/05");
+select * from enroll;
+desc Enroll;
+
+create database saturday;
+use saturday;
+
+create table category(
+c_id int primary key,
+c_name varchar(25) not null unique,
+c_decrp varchar(250) not null
+);
+
+insert into category values (101, 'electronics', 'it stores all set of electronics items');
+select * from category;
+desc category;
+
+CREATE TABLE Products (
+    P_ID int primary key,
+    p_Name varchar(250) NOT NULL,
+    c_id int ,
+    CONSTRAINT c_id FOREIGN KEY (c_id)
+    REFERENCES category(c_id) on delete cascade
+);
+
+insert into products values (904, 'INTEL I5 Processor', 101);
+select * from products;
+delete from category where c_id=101;
+select * from category;
+
+CREATE TABLE Colleges (
+    college_id INT PRIMARY KEY,
+    college_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Subjects (
+    subject_id INT PRIMARY KEY,
+    subject_name VARCHAR(50) NOT NULL,
+    college_id INT,
+    FOREIGN KEY (college_id) REFERENCES Colleges(college_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(50) NOT NULL,
+    college_id INT,
+    subject_id INT,
+    FOREIGN KEY (college_id) REFERENCES Colleges(college_id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id) ON DELETE CASCADE
+);
+
+INSERT INTO Colleges (college_id, college_name) VALUES
+    (1, 'VIT Bhopal'),
+    (2, 'IIT Indore'),
+    (3, 'NIT Warangal');
+
+INSERT INTO Subjects (subject_id, subject_name, college_id) VALUES
+    (1, 'Computer Science', 1),
+    (2, 'Mathematics', 1),
+    (3, 'Physics', 2),
+    (4, 'Electrical Engineering', 3);
+
+INSERT INTO Students (student_id, student_name, college_id, subject_id) VALUES
+    (1, 'Rahul Sharma', 1, 1),
+    (2, 'Priya Jain', 1, 2),
+    (3, 'Amit Verma', 2, 3),
+    (4, 'Sneha Rao', 3, 4);
+
+SELECT * FROM Colleges;
+SELECT * FROM Subjects;
+SELECT * FROM Students;
+
