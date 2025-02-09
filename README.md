@@ -305,3 +305,25 @@ SELECT * FROM Colleges;
 SELECT * FROM Subjects;
 SELECT * FROM Students;
 
+SELECT * FROM Colleges;
+SELECT * FROM Subjects;
+SELECT * FROM Students;
+
+SELECT * FROM Worker 
+WHERE SALARY > 200000 AND DEPARTMENT = 'HR';
+
+SELECT * FROM Worker 
+WHERE SALARY >= 200000;
+
+SELECT * FROM Worker;
+
+select * from worker where salary >= 200000 and salary <= 500000;
+
+SELECT * FROM Worker
+WHERE department = 'Admin' AND salary > 100000
+ORDER by salary DESC;
+
+SELECT * FROM Students WHERE s_name LIKE 'A%';
+SELECT * FROM Students WHERE s_name LIKE 'd%';
+
+
