@@ -326,4 +326,121 @@ ORDER by salary DESC;
 SELECT * FROM Students WHERE s_name LIKE 'A%';
 SELECT * FROM Students WHERE s_name LIKE 'd%';
 
+create table vitBhopal (id int primary key, name varchar(20) not null,
+department varchar(25) not null);
+insert into vitbhopal values (104,'Karthik','cs'),(103,'Arun','cs');
 
+create table vit (id int primary key, name varchar(20) not null,
+college varchar(25) not null);
+insert into vit values (104,'Karthik','chennai'),(103,'Arun','bhopal');
+select * from vit;
+
+select * from vitbhopal;
+
+select name as WinnerOfTheYear from vitbhopal
+where id = (select id from vit where college='bhopal');
+
+CREATE TABLE Worker (
+	WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	FIRST_NAME CHAR(25),
+	LAST_NAME CHAR(25),
+	SALARY INT(15),
+	JOINING_DATE DATETIME,
+	DEPARTMENT CHAR(25)
+);
+
+INSERT INTO Worker 
+	(WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
+		(001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'),
+		(002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'),
+		(003, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'),
+		(004, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'),
+		(005, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'),
+		(006, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'),
+		(007, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'),
+		(008, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
+
+CREATE TABLE Bonus (
+	WORKER_REF_ID INT,
+	BONUS_AMOUNT INT(10),
+	BONUS_DATE DATETIME,
+	FOREIGN KEY (WORKER_REF_ID)
+		REFERENCES Worker(WORKER_ID)
+        ON DELETE CASCADE
+);
+
+INSERT INTO Bonus 
+	(WORKER_REF_ID, BONUS_AMOUNT, BONUS_DATE) VALUES
+		(001, 5000, '16-02-20'),
+		(002, 3000, '16-06-11'),
+		(003, 4000, '16-02-20'),
+		(001, 4500, '16-02-20'),
+		(002, 3500, '16-06-11');
+CREATE TABLE Title (
+	WORKER_REF_ID INT,
+	WORKER_TITLE CHAR(25),
+	AFFECTED_FROM DATETIME,
+	FOREIGN KEY (WORKER_REF_ID)
+		REFERENCES Worker(WORKER_ID)
+        ON DELETE CASCADE
+);
+
+INSERT INTO Title 
+	(WORKER_REF_ID, WORKER_TITLE, AFFECTED_FROM) VALUES
+ (001, 'Manager', '2016-02-20 00:00:00'),
+ (002, 'Executive', '2016-06-11 00:00:00'),
+ (008, 'Executive', '2016-06-11 00:00:00'),
+ (005, 'Manager', '2016-06-11 00:00:00'),
+ (004, 'Asst. Manager', '2016-06-11 00:00:00'),
+ (007, 'Executive', '2016-06-11 00:00:00'),
+ (006, 'Lead', '2016-06-11 00:00:00'),
+ (003, 'Lead', '2016-06-11 00:00:00');
+ 
+ CREATE TABLE vitbhopal (
+  id INT PRIMARY KEY,
+  name VARCHAR(20) NOT NULL,
+  department VARCHAR(25) NOT NULL
+);
+
+INSERT INTO vitbhopal (id, name, department) 
+VALUES (222, 'Karthik', 'cs'), (312, 'Arun', 'cs');
+
+SELECT * FROM vitbhopal;
+
+CREATE TABLE viteee (
+  id INT PRIMARY KEY, 
+  name VARCHAR(20) NOT NULL,
+  college VARCHAR(25) NOT NULL
+);
+
+INSERT INTO viteee (id, name, college) 
+VALUES (104, 'Karthik', 'chennai'), (103, 'Arun', 'bhopal');
+
+SELECT * FROM viteee;
+
+SELECT DEPARTMENT, COUNT(*) AS DEPARTMENT_COUNT 
+FROM Worker
+GROUP BY DEPARTMENT
+HAVING COUNT(*) < 5;
+
+
+SELECT *
+FROM (
+  SELECT *
+  FROM Worker
+  ORDER BY WORKER_ID DESC
+  LIMIT 5
+) AS subquery
+ORDER BY WORKERID;
+
+q) Write an SQL query to fetch the departments that have less than five people in it.
+SELECT DEPARTMENT 
+FROM Worker 
+GROUP BY DEPARTMENT 
+HAVING COUNT(WORKER_ID) < 5;
+
+q) Write an SQL query to fetch the last five records from a table.
+SELECT * 
+FROM Worker 
+ORDER BY WORKER_ID DESC 
+LIMIT 5;
